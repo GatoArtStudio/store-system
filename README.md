@@ -7,7 +7,7 @@ Sistema de gestión de tienda con múltiples aplicaciones y paquetes compartidos
 ### Aplicaciones (apps/)
 
 - **admin-panel** - Panel de administración para gestión del sistema (Vue 3 + Vite)
-- **client** - Aplicación web para clientes finales (Vue 3 + Vite)
+- **store-front** - Aplicación web para clientes finales (Vue 3 + Vite)
 - **warehouse-app** - Aplicación de gestión de bodega (Vue 3 + Vite)
 - **landing-page** - Sitio web público de marketing (Astro)
 - **api** - API REST del backend (Node.js + TypeScript)
