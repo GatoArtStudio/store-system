@@ -1,2 +1,12 @@
 // Export SCSS variables and mixins
-@forward './variables';
+@forward 'abstracts/variables';
+@forward 'abstracts/mixins';
+@forward 'abstracts/functions';
+
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/root';
+
+@use 'components/buttons';
+
+@use 'utilities/helpers';

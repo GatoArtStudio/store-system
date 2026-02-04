@@ -1,0 +1,237 @@
+/* ==========================================================================
+    UTILITIES LIKE TAILWIND  (Sass Powered)
+   ========================================================================== */
+
+// 1. GENERADOR DE SPACING (Margins y Paddings)
+// Genera m-1, mt-2, pb-3, etc., basados en una escala de 0.25rem (4px)
+$space-unit: 0.25rem;
+$levels: (
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    8,
+    10,
+    12,
+    16
+);
+
+@each $n in $levels {
+
+    // Margins
+    .m-#{$n} {
+        margin: $n * $space-unit !important;
+    }
+
+    .mt-#{$n} {
+        margin-top: $n * $space-unit !important;
+    }
+
+    .mb-#{$n} {
+        margin-bottom: $n * $space-unit !important;
+    }
+
+    .ml-#{$n} {
+        margin-left: $n * $space-unit !important;
+    }
+
+    .mr-#{$n} {
+        margin-right: $n * $space-unit !important;
+    }
+
+    .mx-#{$n} {
+        margin-left: $n * $space-unit !important;
+        margin-right: $n * $space-unit !important;
+    }
+
+    .my-#{$n} {
+        margin-top: $n * $space-unit !important;
+        margin-bottom: $n * $space-unit !important;
+    }
+
+    // Paddings
+    .p-#{$n} {
+        padding: $n * $space-unit !important;
+    }
+
+    .pt-#{$n} {
+        padding-top: $n * $space-unit !important;
+    }
+
+    .pb-#{$n} {
+        padding-bottom: $n * $space-unit !important;
+    }
+
+    .pl-#{$n} {
+        padding-left: $n * $space-unit !important;
+    }
+
+    .pr-#{$n} {
+        padding-right: $n * $space-unit !important;
+    }
+
+    .px-#{$n} {
+        padding-left: $n * $space-unit !important;
+        padding-right: $n * $space-unit !important;
+    }
+
+    .py-#{$n} {
+        padding-top: $n * $space-unit !important;
+        padding-bottom: $n * $space-unit !important;
+    }
+}
+
+// 2. DISPLAY & FLEXBOX
+.d-block {
+    display: block !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.flex-row {
+    flex-direction: row !important;
+}
+
+.flex-column {
+    flex-direction: column !important;
+}
+
+.flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.justify-start {
+    justify-content: flex-start !important;
+}
+
+.justify-center {
+    justify-content: center !important;
+}
+
+.justify-end {
+    justify-content: flex-end !important;
+}
+
+.justify-between {
+    justify-content: space-between !important;
+}
+
+.items-start {
+    align-items: flex-start !important;
+}
+
+.items-center {
+    align-items: center !important;
+}
+
+.items-end {
+    align-items: flex-end !important;
+}
+
+// 3. TYPOGRAPHY
+.text-left {
+    text-align: left !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.font-light {
+    font-weight: 300 !important;
+}
+
+.font-normal {
+    font-weight: 400 !important;
+}
+
+.font-semibold {
+    font-weight: 600 !important;
+}
+
+.font-bold {
+    font-weight: 700 !important;
+}
+
+.font-extrabold {
+    font-weight: 800 !important;
+}
+
+.italic {
+    font-style: italic !important;
+}
+
+.uppercase {
+    text-transform: uppercase !important;
+}
+
+.lowercase {
+    text-transform: lowercase !important;
+}
+
+.capitalize {
+    text-transform: capitalize !important;
+}
+
+// 4. POSITIONING
+.relative {
+    position: relative !important;
+}
+
+.absolute {
+    position: absolute !important;
+}
+
+.fixed {
+    position: fixed !important;
+}
+
+.top-0 {
+    top: 0 !important;
+}
+
+.right-0 {
+    right: 0 !important;
+}
+
+.bottom-0 {
+    bottom: 0 !important;
+}
+
+.left-0 {
+    left: 0 !important;
+}
+
+// 5. SIZING (W & H)
+.w-full {
+    width: 100% !important;
+}
+
+.h-full {
+    height: 100% !important;
+}
+
+.w-screen {
+    width: 100vw !important;
+}
+
+.h-screen {
+    height: 100vh !important;
+}

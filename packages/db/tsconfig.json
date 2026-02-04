@@ -4,6 +4,10 @@
     "outDir": "./dist",
     "rootDir": "./src"
   },
+  "paths": {
+    "@store-system/db": ["./src/index.ts"],
+    "@store-system/db/*": ["./src/*"],
+  },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }

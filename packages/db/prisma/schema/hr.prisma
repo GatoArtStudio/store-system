@@ -1,0 +1,140 @@
+model Employee {
+  id             String      @id @default(uuid())
+  name           String
+  lastname       String
+  nss            String      @unique
+  rfc            String      @unique
+  address        String
+  salary         Float       @default(0.0)
+  vacationDays   Int         @default(0)
+  birthdate      DateTime
+  isRehired      Boolean     @default(false)
+  createdAt      DateTime    @default(now())
+
+  // Relationships
+  user                User        @relation(fields: [userId], references: [id])
+  userId              String      @unique
+  payrolls            Payroll[]
+  schedules           Schedule[]
+  timeOffs            TimeOff[]
+  salaryLogs          SalaryLog[]
+  attendanceLogs      AttendanceLog[]
+  performanceWarnings PerformanceWarning[]
+
+  // --- New Swap Relationships ---
+  sentSwaps           ShiftSwap[] @relation("SentSwaps")
+  receivedSwaps       ShiftSwap[] @relation("ReceivedSwaps")
+
+  // External Relations
+  sales               Sale[]
+  stockLogs           StockLog[]
+  transfers           Transfer[]
+  discountsAuthorized Discount[]
+  refundsAuthorized   Refund[]
+
+  @@map("employees")
+}
+
+model ShiftSwap {
+  id                String   @id @default(uuid())
+  // Who is asking for the swap
+  requesterId       String
+  requester         Employee @relation("SentSwaps", fields: [requesterId], references: [id])
+
+  // Who is receiving the request
+  receiverId        String
+  receiver          Employee @relation("ReceivedSwaps", fields: [receiverId], references: [id])
+
+  // Specific shift IDs from the Schedule table
+  requesterShiftId  String   // The shift Employee A wants to give up
+  receiverShiftId   String   // The shift Employee B will give in return
+
+  // "PENDING_RECEIVER" | "PENDING_ADMIN" | "APPROVED" | "REJECTED" | "CANCELLED"
+  status            String   @default("PENDING_RECEIVER")
+
+  reason            String?
+  authorizedBy      String?  // Admin ID who gave final approval
+  createdAt         DateTime @default(now())
+
+  @@map("shift_swaps")
+}
+
+// (Models for Schedule, AttendanceLog, PerformanceWarning, SalaryLog, TimeOff, and Payroll remain at the bottom)
+
+model Schedule {
+  id          String   @id @default(uuid())
+  weekNumber  Int
+  year        Int
+  dayOfWeek   Int
+  startTime   String?
+  endTime     String?
+  isDayOff    Boolean  @default(false)
+  note        String?
+
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+
+  @@map("schedules")
+}
+
+model AttendanceLog {
+  id          String   @id @default(uuid())
+  date        DateTime
+  type        String
+  minutesLate Int?
+  reason      String?
+  createdAt   DateTime @default(now())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  @@map("attendance_logs")
+}
+
+model PerformanceWarning {
+  id          String   @id @default(uuid())
+  date        DateTime @default(now())
+  severity    String
+  description String
+  createdAt   DateTime @default(now())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  @@map("performance_warnings")
+}
+
+model SalaryLog {
+  id            String   @id @default(uuid())
+  oldSalary     Float
+  newSalary     Float
+  changeReason  String
+  effectiveDate DateTime @default(now())
+  employeeId    String
+  employee      Employee @relation(fields: [employeeId], references: [id])
+  @@map("salary_logs")
+}
+
+model TimeOff {
+  id          String   @id @default(uuid())
+  startDate   DateTime
+  endDate     DateTime
+  type        String
+  status      String   @default("PENDING")
+  reason      String?
+  createdAt   DateTime @default(now())
+  employeeId  String
+  employee    Employee @relation(fields: [employeeId], references: [id])
+  @@map("time_offs")
+}
+
+model Payroll {
+  id          String    @id @default(uuid())
+  period      String
+  baseSalary  Float
+  bonuses     Float     @default(0.0)
+  deductions  Float     @default(0.0)
+  netSalary   Float
+  status      String    @default("PENDING")
+  paidAt      DateTime?
+  createdAt   DateTime  @default(now())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  @@map("payrolls")
+}

@@ -1,31 +1,32 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import { resolve } from 'path';
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import { resolve } from "path";
 
 export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'StoreSystemUIComponents',
+      entry: resolve(__dirname, "src/index.ts"),
+      name: "StoreSystemUIComponents",
       fileName: (format) => `index.${format}.js`,
-      formats: ['es', 'cjs'],
+      formats: ["es", "cjs"],
     },
     rollupOptions: {
-      external: ['vue'],
+      external: ["vue"],
       output: {
         globals: {
-          vue: 'Vue',
+          vue: "Vue",
         },
-        exports: 'named',
+        exports: "named",
       },
     },
-    outDir: 'dist',
+    outDir: "dist",
     emptyOutDir: true,
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      "@": resolve(__dirname, "src"),
+      "@store-system/ui-theme": resolve(__dirname, "../ui-theme/scss"),
     },
   },
 });

@@ -1,0 +1,18 @@
+model User {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  role              String    @default("USER")
+  isActive          Boolean   @default(false)
+  isVerified        Boolean   @default(false)
+
+  token             String?   @unique
+  tokenExpires      DateTime?
+
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  employee          Employee?
+
+  @@map("users")
+}

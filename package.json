@@ -3,18 +3,41 @@
   "version": "1.0.0",
   "description": "Store management system monorepo",
   "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "@prisma/engines",
+      "bcrypt",
+      "better-sqlite3",
+      "esbuild",
+      "prisma",
+      "sharp"
+    ]
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
     "type-check": "turbo run type-check",
     "clean": "turbo run clean",
-    "install:all": "pnpm install"
+    "install:all": "pnpm install",
+    "dev:admin": "pnpm --filter @store-system/admin-panel dev",
+    "dev:api": "pnpm --filter @store-system/api dev",
+    "dev:store": "pnpm --filter @store-system/store-front dev",
+    "dev:warehouse": "pnpm --filter @store-system/warehouse-app dev",
+    "dev:landing": "pnpm --filter @store-system/landing-page dev",
+    "db:generate": "pnpm --filter @store-system/db exec prisma generate",
+    "db:migrate": "pnpm --filter @store-system/db exec prisma migrate dev",
+    "db:studio": "pnpm --filter @store-system/db exec prisma studio",
+    "db:push": "pnpm --filter @store-system/db exec prisma db push",
+    "db:seed": "pnpm --filter @store-system/db exec prisma db seed"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.19.0",
   "devDependencies": {
+    "dotenv": "^17.2.3",
+    "tsx": "^4.21.0",
     "turbo": "^2.7.6",
     "typescript": "^5.7.3"
   }

@@ -1,11 +1,12 @@
 {
-  "name": "@store-system/client",
+  "name": "@store-system/store-front",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "type-check": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {

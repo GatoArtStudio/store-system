@@ -1,0 +1,30 @@
+// Colores de marca
+$primary: #42b883;
+$secondary: #35495e;
+$danger: #e74c3c;
+$white: #ffffff;
+$dark: #2c3e50;
+
+// Escala de Grises
+$gray-100: #f8f9fa;
+$gray-500: #6c757d;
+$gray-900: #212529;
+
+// Tipografía
+$font-main: 'Montserrat', sans-serif;
+$font-size-base: 16px;
+
+$font-light: 300;
+$font-normal: 400;
+$font-medium: 500;
+$font-semibold: 600;
+$font-bold: 700;
+
+
+// Breakpoints para Responsive
+$breakpoints: (
+    "sm": 576px,
+    "md": 768px,
+    "lg": 992px,
+    "xl": 1200px
+);

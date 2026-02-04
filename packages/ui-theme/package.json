@@ -5,7 +5,8 @@
   "main": "./scss/_index.scss",
   "exports": {
     ".": "./scss/_index.scss",
-    "./variables": "./scss/_variables.scss"
+    "./scss/*": "./scss/*",
+    "./variables": "./scss/abstracts/_variables.scss"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

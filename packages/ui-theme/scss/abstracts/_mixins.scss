@@ -1,0 +1,22 @@
+// Mixin para Media Queries (Responsive)
+// Uso: @include respond-to('md') { ... }
+@mixin respond-to($breakpoint) {
+    $value: map-get($breakpoints, $breakpoint);
+
+    @if $value {
+        @media (min-width: $value) {
+            @content;
+        }
+    }
+
+    @else {
+        @error "El breakpoint #{$breakpoint} no existe.";
+    }
+}
+
+// Mixin para centrar elementos con Flexbox
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

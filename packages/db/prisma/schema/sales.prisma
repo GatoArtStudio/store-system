@@ -1,0 +1,84 @@
+model Sale {
+  id            String    @id @default(uuid())
+  total         Float
+  subtotal      Float
+  tax           Float     @default(0.0)
+  status        String    @default("COMPLETED") // "COMPLETED" | "CANCELLED" | "REFUNDED"
+  ticketPrinted Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  employeeId    String
+  employee      Employee  @relation(fields: [employeeId], references: [id])
+
+  payments      Payment[]
+  discounts     Discount[]
+  refunds       Refund[]
+  items         SaleItem[]
+
+  @@map("sales")
+}
+
+model SaleItem {
+  id          String  @id @default(uuid())
+  quantity    Int
+  unitPrice   Float
+  subtotal    Float
+
+  // Relations
+  saleId      String
+  sale        Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  productId   String
+  product     Product @relation(fields: [productId], references: [id])
+
+  @@map("sale_items")
+}
+
+model Payment {
+  id          String    @id @default(uuid())
+  amount      Float
+  method      String    // "CASH" | "CARD" | "TRANSFER"
+  reference   String?
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  saleId      String
+  sale        Sale      @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+model Discount {
+  id            String    @id @default(uuid())
+  amount        Float
+  type          String    // "PERCENTAGE" | "FIXED"
+  reason        String?
+  createdAt     DateTime  @default(now())
+
+  // Relations
+  saleId        String
+  sale          Sale      @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  authorizedBy  String?   // Employee ID who authorized (admin)
+  authorizer    Employee? @relation(fields: [authorizedBy], references: [id])
+
+  @@map("discounts")
+}
+
+model Refund {
+  id                String    @id @default(uuid())
+  amount            Float
+  reason            String
+  restockCompleted  Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+
+  // Relations
+  saleId            String
+  sale              Sale      @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  authorizedBy      String?   // Employee ID who authorized (admin)
+  authorizer        Employee? @relation(fields: [authorizedBy], references: [id])
+
+  @@map("refunds")
+}

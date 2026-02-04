@@ -1,0 +1,81 @@
+erDiagram
+    SALE ||--o{ SALE_ITEM : "contains"
+    SALE ||--o{ PAYMENT : "has"
+    SALE ||--o{ DISCOUNT : "applies"
+    SALE ||--o{ REFUND : "has"
+    EMPLOYEE ||--o{ SALE : "processes"
+    PRODUCT ||--o{ SALE_ITEM : "included in"
+    EMPLOYEE ||--o{ DISCOUNT : "authorizes"
+    EMPLOYEE ||--o{ REFUND : "authorizes"
+
+    SALE {
+        string id PK "UUID"
+        float total
+        float subtotal
+        float tax
+        string status "COMPLETED|CANCELLED|REFUNDED"
+        bool ticketPrinted
+        datetime createdAt
+        string employeeId FK
+    }
+
+    SALE_ITEM {
+        string id PK "UUID"
+        int quantity
+        float unitPrice
+        float subtotal
+        string saleId FK
+        string productId FK
+    }
+
+    PAYMENT {
+        string id PK "UUID"
+        float amount
+        string method "CASH|CARD|TRANSFER"
+        string reference "Nullable"
+        datetime createdAt
+        string saleId FK
+    }
+
+    DISCOUNT {
+        string id PK "UUID"
+        float amount
+        string type "PERCENTAGE|FIXED"
+        string reason "Nullable"
+        datetime createdAt
+        string saleId FK
+        string authorizedBy FK "Employee ID, Nullable"
+    }
+
+    REFUND {
+        string id PK "UUID"
+        float amount
+        string reason
+        bool restockCompleted
+        datetime createdAt
+        string saleId FK
+        string authorizedBy FK "Employee ID, Nullable"
+    }
+
+    PRODUCT {
+        string id PK "UUID"
+        string name
+        string description "Nullable"
+        string sku UK
+        string barcode UK "Nullable"
+        float price
+        float cost
+        int stock
+        int minStock
+        int maxStock "Nullable"
+        string category "Nullable"
+        bool isActive
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    EMPLOYEE {
+        string id PK "UUID"
+        string name
+        string lastname
+    }

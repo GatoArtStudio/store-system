@@ -1,188 +1,293 @@
 # Store System Monorepo
 
-Sistema de gestión de tienda con múltiples aplicaciones y paquetes compartidos.
+🇲🇽 [Documentación en Español](./README.es.md)
 
-## Estructura del Proyecto
+Store management system with multiple applications and shared packages.
 
-### Aplicaciones (apps/)
+## Project Structure
 
-- **admin-panel** - Panel de administración para gestión del sistema (Vue 3 + Vite)
-- **store-front** - Aplicación web para clientes finales (Vue 3 + Vite)
-- **warehouse-app** - Aplicación de gestión de bodega (Vue 3 + Vite)
-- **landing-page** - Sitio web público de marketing (Astro)
-- **api** - API REST del backend (Node.js + TypeScript)
+### Applications (apps/)
 
-### Paquetes Compartidos (packages/)
+- **admin-panel** - Administration panel for system management (Vue 3 + Vite)
+- **store-front** - Web application for end customers (Vue 3 + Vite)
+- **warehouse-app** - Warehouse management application (Vue 3 + Vite)
+- **landing-page** - Public marketing site (Astro)
+- **api** - Backend REST API (Node.js + TypeScript)
 
-- **@store-system/types** - Tipos TypeScript compartidos entre todos los proyectos
-- **@store-system/db** - Cliente de base de datos y esquemas (placeholder para ORM)
-- **@store-system/ui-components** - Librería de componentes Vue reutilizables
-- **@store-system/ui-theme** - Variables de diseño y estilos compartidos (SCSS)
-- **@store-system/tsconfig** - Configuraciones TypeScript base para el monorepo
+### Shared Packages (packages/)
 
-## Inicio Rápido
+- **@store-system/types** - Shared TypeScript types across projects
+- **@store-system/db** - Prisma ORM v7 database client with SQLite, modular schemas, and automatic password hashing
+- **@store-system/ui-components** - Reusable Vue component library
+- **@store-system/ui-theme** - Shared design tokens and styles (SCSS)
+- **@store-system/tsconfig** - Base TypeScript configurations for the monorepo
 
-### Requisitos Previos
+## Documentation
 
-- Node.js v18 o superior
-- pnpm v8 o superior
+- [Database Setup](./docs/database.md) - Database configuration, schema setup, and Prisma ORM v7 usage
+- [Database Models](./docs/models.md) - Data model definitions and relationships
+- [API Documentation](./docs/api/README.md) - Architecture, dependencies, and implementation roadmap of the Backend API
+- [Monorepo Audit Report (2026-02-02)](./docs/monorepo-audit-report.md) - Summary of configuration repairs and fixes
 
-### Instalación
+## Quick Start
+
+### Prerequisites
+
+- Node.js v18 or newer
+- pnpm v8 or newer
+
+### Installation
 
 ```bash
-# Instalar todas las dependencias del monorepo
+# Install all monorepo dependencies
 pnpm install
+```
 
-# Construir todos los paquetes compartidos
+```bash
+
+# Build all shared packages
+pnpm build
+
+```
+
+```bash
+# Setup database (first time only)
+# Setup database (first time only)
+pnpm db:generate
+pnpm db:migrate --name init_auth_and_hr
+```
+
+### Available Commands
+
+```bash
+# Development - Start all services in watch mode
+pnpm dev
+```
+
+```bash
+# Build - Build all packages and applications
 pnpm build
 ```
 
-### Comandos Disponibles
+```bash
+# Type Check - Verify TypeScript types across the monorepo
+pnpm type-check
+```
 
 ```bash
-# Desarrollo - Iniciar todos los servicios en modo watch
-pnpm dev
-
-# Build - Construir todos los paquetes y aplicaciones
-pnpm build
-
-# Type Check - Verificar tipos TypeScript en todo el monorepo
-pnpm type-check
-
-# Clean - Limpiar todos los archivos de build
+# Clean - Remove all build artifacts
 pnpm clean
 ```
 
-### Trabajar con Paquetes Específicos
+### Development Scripts for Individual Apps
 
 ```bash
-# Ejecutar comando en un paquete específico
+# Run individual applications (use -w flag to run from root)
+pnpm -w run dev:admin       # Admin Panel
+```
+
+```bash
+pnpm -w run dev:api         # API Server
+```
+
+```bash
+pnpm -w run dev:store       # Store Front (POS)
+```
+
+```bash
+pnpm -w run dev:warehouse   # Warehouse App
+```
+
+```bash
+pnpm -w run dev:landing     # Landing Page
+```
+
+```bash
+# Database quick commands
+pnpm -w run db:generate     # Generate Prisma Client
+```
+
+```bash
+pnpm -w run db:migrate      # Create and apply migration
+```
+
+```bash
+pnpm -w run db:studio       # Open Prisma Studio
+```
+
+### Working with Specific Packages
+
+```bash
+# Run a command in a specific package
 pnpm --filter @store-system/types build
 pnpm --filter @store-system/ui-components dev
 
-# Ejecutar en una aplicación específica
+# Run in a specific application
 pnpm --filter @store-system/admin-panel dev
+
+# Database commands
+pnpm --filter @store-system/db exec prisma generate
+pnpm --filter @store-system/db exec prisma studio
 ```
 
-## Configuración TypeScript
+## Database
 
-El monorepo utiliza configuraciones TypeScript compartidas ubicadas en `packages/tsconfig/`:
+The project uses Prisma ORM v7 with SQLite in a shared database architecture. All applications access the same `dev.db` file located at the monorepo root.
 
-- **base.json** - Configuración base con reglas estrictas para todos los proyectos
-- **vue.json** - Configuración específica para aplicaciones Vue con Vite
-- **node.json** - Configuración para proyectos Node.js/backend
-- **astro.json** - Configuración para proyectos Astro
-- **library.json** - Configuración para librerías/paquetes compartidos
+### Quick Database Commands
 
-Cada proyecto extiende estas configuraciones usando rutas relativas:
+```bash
+# Generate Prisma Client
+# Generate Prisma Client
+pnpm -w run db:generate
+
+# Create/apply migrations
+pnpm -w run db:migrate --name <migration_name>
+
+# Open database GUI
+pnpm -w run db:studio
+
+# Reset database (deletes all data)
+pnpm --filter @store-system/db exec prisma migrate reset
+```
+
+See [docs/database.md](./docs/database.md) for detailed setup instructions and Prisma 7 configuration details.
+
+## TypeScript Configuration
+
+The monorepo uses shared TypeScript configurations located in `packages/tsconfig/`:
+
+- **base.json** - Base configuration with strict rules for all projects
+- **vue.json** - Configuration specific to Vue apps with Vite
+- **node.json** - Configuration for Node.js/backend projects
+- **astro.json** - Configuration for Astro projects
+- **library.json** - Configuration for libraries/shared packages
+
+Each project extends these configurations using relative paths:
 
 ```json
 {
   "extends": "../../packages/tsconfig/vue.json",
   "compilerOptions": {
-    // Configuraciones específicas del proyecto
+    // Project-specific configurations
   }
 }
 ```
 
-## Desarrollo de Paquetes
+## Package Development
 
-### Agregar Dependencias entre Workspaces
+### Adding Workspace Dependencies
 
 ```bash
-# Agregar un paquete del workspace a otro
+# Add a workspace package to another
 pnpm --filter @store-system/api add @store-system/types@workspace:*
 pnpm --filter @store-system/admin-panel add @store-system/ui-components@workspace:*
 ```
 
-### Agregar Dependencias Externas
+### Adding External Dependencies
 
 ```bash
-# Agregar dependencia a un paquete específico
+# Add a dependency to a specific package
 pnpm --filter @store-system/api add express
 pnpm --filter @store-system/types add -D typescript
 ```
 
-### Estructura de un Paquete Compartido
+### Shared Package Layout
 
 ```
 packages/types/
 ├── src/
-│   ├── index.ts        # Punto de entrada principal
-│   ├── user.ts         # Tipos relacionados con usuarios
-│   └── product.ts      # Tipos relacionados con productos
-├── dist/               # Archivos compilados (generados)
-├── package.json        # Configuración del paquete
-└── tsconfig.json       # Configuración TypeScript
+│   ├── index.ts        # Main entry point
+│   ├── user.ts         # User-related types
+│   └── product.ts      # Product-related types
+├── dist/               # Compiled files (generated)
+├── package.json        # Package configuration
+└── tsconfig.json       # TypeScript configuration
 ```
 
-## Arquitectura del Monorepo
+## Monorepo Architecture
 
-### Gestión de Dependencias
+### Dependency Management
 
-- **pnpm workspaces** - Gestión eficiente de dependencias compartidas
-- **workspace:\*** - Referencias entre paquetes del monorepo
+- **pnpm workspaces** - Efficient management of shared dependencies
+- **workspace:** - References between monorepo packages
 
-### Build y Cache
+### Build and Cache
 
-- **Turborepo** - Sistema de build incremental con cache inteligente
-- Dependencias de build configuradas en `turbo.json`
-- Cache local para acelerar rebuilds
+- **Turborepo** - Incremental build system with smart caching
+- Build pipelines configured in `turbo.json`
+- Local cache to speed up rebuilds
 
-### Tipos Compartidos
+### Shared Types
 
-El paquete `@store-system/types` provee tipos comunes:
+The `@store-system/types` package provides common types:
 
 ```typescript
-import type { User, Product } from '@store-system/types';
+import type { User, Product } from "@store-system/types";
 ```
 
-### Componentes Compartidos
+### Database Access
 
-El paquete `@store-system/ui-components` exporta componentes Vue:
+The `@store-system/db` package provides type-safe database access:
 
 ```typescript
-import { Button } from '@store-system/ui-components';
+import { prisma } from "@store-system/db";
+
+// Type-safe queries with autocomplete
+const users = await prisma.user.findMany({
+  include: { employee: true },
+});
 ```
 
-## Próximos Pasos
+All Prisma models are automatically typed and available across the monorepo.
 
-### Infraestructura Base
+### Shared Components
 
-- [ ] Configurar ORM (Prisma/Drizzle) en `@store-system/db`
-- [ ] Implementar API con framework (Express/Fastify/Hono)
-- [ ] Configurar variables de entorno (.env y validación)
-- [ ] Configurar Docker para desarrollo local
+The `@store-system/ui-components` package exports Vue components:
 
-### Calidad de Código
+```typescript
+import { Button } from "@store-system/ui-components";
+```
 
-- [ ] Configurar ESLint con reglas compartidas
-- [ ] Configurar Prettier para formateo consistente
-- [ ] Configurar Husky para git hooks
-- [ ] Implementar pre-commit linting
+## Next Steps
+
+### Base Infrastructure
+
+- [x] Configure ORM (Prisma v7) in `@store-system/db`
+- [x] Modular schema architecture (auth, hr, sales, inventory)
+- [ ] Implement API with a framework (Express/Fastify/Hono)
+- [ ] Configure environment variables (.env and validation)
+- [ ] Configure Docker for local development
+
+### Code Quality
+
+- [ ] Configure ESLint with shared rules
+- [ ] Configure Prettier for consistent formatting
+- [ ] Configure Husky for git hooks
+- [ ] Implement pre-commit linting
 
 ### Testing
 
-- [ ] Configurar Vitest para pruebas unitarias
-- [ ] Configurar Playwright para pruebas E2E
-- [ ] Agregar pruebas a paquetes críticos
-- [ ] Configurar coverage reports
+- [ ] Configure Vitest for unit tests
+- [ ] Configure Playwright for E2E tests
+- [ ] Add tests for critical packages
+- [ ] Configure coverage reports
 
 ### CI/CD
 
-- [ ] Configurar GitHub Actions / GitLab CI
-- [ ] Pipeline de testing automático
-- [ ] Build y deploy automático
-- [ ] Semantic versioning y changelogs
+- [ ] Configure GitHub Actions / GitLab CI
+- [ ] Automatic testing pipeline
+- [ ] Automatic build and deploy
+- [ ] Semantic versioning and changelogs
 
-## Stack Tecnológico
+## Tech Stack
 
 ### Core
 
 - **Package Manager:** pnpm 10.19.0
 - **Build System:** Turborepo 2.7.6
 - **Runtime:** Node.js v25+
-- **Lenguaje:** TypeScript 5.7.3
+- **Language:** TypeScript 5.7.3
 
 ### Frontend
 
@@ -191,28 +296,36 @@ import { Button } from '@store-system/ui-components';
 - **Static Site:** Astro
 - **Styling:** SCSS
 
-### Herramientas de Desarrollo
+Backend
+
+- **Database:** SQLite (development)
+- **ORM:** Prisma v7.3.0
+- **Database Driver:** better-sqlite3 with adapter pattern
+- **Security:** bcrypt for password hashing
+- **Schema:** Modular multi-file structure
+
+### Development Tools
 
 - **Bundler:** Vite
 - **Type Checking:** vue-tsc, tsc
 - **Module Resolution:** pnpm workspaces
 
-## Convenciones
+## Conventions
 
-### Nombres de Paquetes
+### Package Names
 
-- Apps: nombres en kebab-case (admin-panel, warehouse-app)
-- Packages: scope @store-system con kebab-case (@store-system/ui-components)
+- Apps: kebab-case names (admin-panel, warehouse-app)
+- Packages: scope @store-system with kebab-case (@store-system/ui-components)
 
-### Estructura de Archivos
+### File Structure
 
-- `src/` - Código fuente
-- `dist/` - Archivos compilados (no commiteados)
-- `public/` - Archivos estáticos (solo apps)
+- `src/` - Source code
+- `dist/` - Compiled files (do not commit)
+- `public/` - Static assets (apps only)
 
 ### Commits
 
-Se recomienda seguir Conventional Commits:
+Recommended to follow Conventional Commits:
 
 ```
 feat(api): add user authentication endpoint
@@ -220,7 +333,7 @@ fix(ui-components): correct button hover state
 docs(readme): update installation steps
 ```
 
-## Recursos Adicionales
+## Additional Resources
 
 - [pnpm Workspaces](https://pnpm.io/workspaces)
 - [Turborepo Documentation](https://turbo.build/repo/docs)

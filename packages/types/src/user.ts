@@ -1,17 +1,32 @@
-import type { ID, Timestamps } from './index';
+export type UserRole = 'USER' | 'ADMIN' | 'WAREHOUSE';
 
-export interface User extends Timestamps {
-  id: ID;
+export interface User {
+  id: string;
   email: string;
-  name: string;
+  password: string;
   role: UserRole;
+  isActive: boolean;
 }
 
-export enum UserRole {
-  ADMIN = 'admin',
-  CUSTOMER = 'customer',
-  WAREHOUSE_STAFF = 'warehouse_staff',
+export interface Employee {
+  id: string;
+  name: string;
+  lastname: string;
+  nss: string;
+  rfc: string;
+  address: string;
+  salary: number;
+  vacationDays: number;
+  birthdate: Date;
+  isRehired: boolean;
+  createdAt: Date;
+  userId: string;
 }
 
-export type CreateUserInput = Omit<User, 'id' | 'createdAt' | 'updatedAt'>;
-export type UpdateUserInput = Partial<CreateUserInput>;
+export type UserWithEmployee = User & { employee: Employee | null };
+export type SafeUser = Omit<User, 'password'>;
+
+export type CreateUserInput = Omit<User, 'id'>;
+export type UpdateUserInput = Partial<Omit<CreateUserInput, 'password'>> & {
+  password?: string;
+};

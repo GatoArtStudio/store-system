@@ -1,0 +1,114 @@
+erDiagram
+    USER ||--|| EMPLOYEE : "has profile"
+    EMPLOYEE ||--o{ PAYROLL : "receives"
+    EMPLOYEE ||--o{ SCHEDULE : "has"
+    EMPLOYEE ||--o{ TIME_OFF : "requests"
+    EMPLOYEE ||--o{ SALARY_LOG : "tracks"
+    EMPLOYEE ||--o{ ATTENDANCE_LOG : "records"
+    EMPLOYEE ||--o{ PERFORMANCE_WARNING : "receives"
+    EMPLOYEE ||--o{ SHIFT_SWAP : "sends (requester)"
+    EMPLOYEE ||--o{ SHIFT_SWAP : "receives (receiver)"
+
+    USER {
+        string id PK "UUID"
+        string email UK
+        string password "Hashed"
+        string role "USER|ADMIN|WAREHOUSE"
+        bool isActive
+        bool isVerified
+        string token UK "Nullable"
+        datetime tokenExpires "Nullable"
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    EMPLOYEE {
+        string id PK "UUID"
+        string userId FK UK "Relation to USER"
+        string name
+        string lastname
+        string nss UK "Social Security Number"
+        string rfc UK "Tax ID Mexico"
+        string address "Full Address"
+        float salary "Base Salary"
+        int vacationDays "Available Days"
+        datetime birthdate "Date of Birth"
+        bool isRehired "Rehired"
+        datetime createdAt
+    }
+
+    SHIFT_SWAP {
+        string id PK "UUID"
+        string requesterId FK "Employee requesting"
+        string receiverId FK "Employee receiving"
+        string requesterShiftId "Shift to give up"
+        string receiverShiftId "Shift in return"
+        string status "PENDING_RECEIVER|PENDING_ADMIN|APPROVED|REJECTED|CANCELLED"
+        string reason "Nullable"
+        string authorizedBy "Admin ID, Nullable"
+        datetime createdAt
+    }
+
+    SCHEDULE {
+        string id PK "UUID"
+        int weekNumber
+        int year
+        int dayOfWeek
+        string startTime "Nullable"
+        string endTime "Nullable"
+        bool isDayOff
+        string note "Nullable"
+        string employeeId FK
+    }
+
+    ATTENDANCE_LOG {
+        string id PK "UUID"
+        datetime date
+        string type "PRESENT|LATE|ABSENT"
+        int minutesLate "Nullable"
+        string reason "Nullable"
+        datetime createdAt
+        string employeeId FK
+    }
+
+    PERFORMANCE_WARNING {
+        string id PK "UUID"
+        datetime date
+        string severity "LOW|MEDIUM|HIGH"
+        string description
+        datetime createdAt
+        string employeeId FK
+    }
+
+    SALARY_LOG {
+        string id PK "UUID"
+        float oldSalary
+        float newSalary
+        string changeReason
+        datetime effectiveDate
+        string employeeId FK
+    }
+
+    TIME_OFF {
+        string id PK "UUID"
+        datetime startDate
+        datetime endDate
+        string type "VACATION|SICK|PERSONAL"
+        string status "PENDING|APPROVED|REJECTED"
+        string reason "Nullable"
+        datetime createdAt
+        string employeeId FK
+    }
+
+    PAYROLL {
+        string id PK "UUID"
+        string period
+        float baseSalary
+        float bonuses
+        float deductions
+        float netSalary
+        string status "PENDING|PAID|CANCELLED"
+        datetime paidAt "Nullable"
+        datetime createdAt
+        string employeeId FK
+    }

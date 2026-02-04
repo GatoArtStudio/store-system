@@ -1,0 +1,14 @@
+// Convertir Pixeles a REM automáticamente
+// Uso: font-size: rem(24); -> 1.5rem
+@function to-rem($pixel) {
+    @if not $pixel {
+        @error "Debes pasar un valor en px";
+    }
+
+    @return calc($pixel / 16) * 1rem;
+}
+
+// Obtener un color con opacidad
+@function color-alpha($color, $opacity) {
+    @return rgba($color, $opacity);
+}

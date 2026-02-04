@@ -1,0 +1,71 @@
+erDiagram
+    PRODUCT ||--o{ STOCK_LOG : "tracks"
+    PRODUCT ||--o{ TRANSFER_ITEM : "transferred in"
+    EMPLOYEE ||--o{ STOCK_LOG : "records"
+    WAREHOUSE ||--o{ STOCK_LOG : "stores"
+    WAREHOUSE ||--o{ TRANSFER : "sends from"
+    WAREHOUSE ||--o{ TRANSFER : "receives to"
+    EMPLOYEE ||--o{ TRANSFER : "manages"
+    TRANSFER ||--o{ TRANSFER_ITEM : "contains"
+
+    PRODUCT {
+        string id PK "UUID"
+        string name
+        string description "Nullable"
+        string sku UK
+        string barcode UK "Nullable"
+        float price
+        float cost
+        int stock
+        int minStock
+        int maxStock "Nullable"
+        string category "Nullable"
+        bool isActive
+        datetime createdAt
+        datetime updatedAt
+    }
+
+    STOCK_LOG {
+        string id PK "UUID"
+        int quantity "Positive (entry) or negative (exit)"
+        string type "ENTRY|EXIT|ADJUSTMENT|SALE|TRANSFER|DAMAGE|DONATION|EXPIRATION"
+        string reason "Nullable"
+        int previousStock
+        int newStock
+        datetime createdAt
+        string productId FK
+        string employeeId FK
+        string warehouseId FK "Nullable"
+    }
+
+    WAREHOUSE {
+        string id PK "UUID"
+        string name
+        string location
+        bool isActive
+        datetime createdAt
+    }
+
+    TRANSFER {
+        string id PK "UUID"
+        string status "PENDING|IN_TRANSIT|COMPLETED|CANCELLED"
+        string notes "Nullable"
+        datetime createdAt
+        datetime completedAt "Nullable"
+        string fromWarehouseId FK
+        string toWarehouseId FK
+        string employeeId FK
+    }
+
+    TRANSFER_ITEM {
+        string id PK "UUID"
+        int quantity
+        string transferId FK
+        string productId FK
+    }
+
+    EMPLOYEE {
+        string id PK "UUID"
+        string name
+        string lastname
+    }
